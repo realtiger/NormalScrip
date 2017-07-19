@@ -16,6 +16,7 @@ bind-key -t vi-copy v begin-selection
 bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 ''')
 python_version = "3.6.1"
+os.chdir(home_path[0])
 if not os.path.isfile('/usr/local/python3/bin/python3'):
     os.system("yum install wget -y")
     if not os.path.isfile('%s/Python-%s.tar.xz' % (home_path[0], python_version)):
