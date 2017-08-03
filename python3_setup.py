@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import os
+os.system("yum install bash-complete -y")
+os.system("yum install gcc* vim* -y")
 home_path = ["/root"]
 for path in home_path:
     if not os.path.isfile('%s/.tmux.conf' % path):
