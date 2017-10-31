@@ -44,9 +44,11 @@ if not os.path.exists("%s/.virtualenvs" % home_path[0]):
     os.system('pip3 install virtualenvwrapper')
     os.system('mkdir ~/.virtualenvs')
     os.system('ln -s /usr/local/python3/bin/virtualenv /usr/bin/virtualenv')
-
+    # config source file
     with open('/etc/bashrc', 'a') as f:
-        f.write('''
+        if not "source /usr/local/python3/bin/virtualenvwrapper3.sh" in f.read():
+            f.write('''
+export EDITOR=/usr/bin/vim
 if [ ! -d "$HOME/.virtualenvs" ] ; then
   mkdir $HOME/.virtualenvs
 fi
