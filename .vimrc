@@ -1,59 +1,131 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Base Config  
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 显示相关  
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Get out of VI's compatible mode..
+set nocompatible
+"Sets how many lines of history VIM har to remember
+set history=1000
 
-" show number
-set nu
-" 不要图形按钮
-set go=
-"color asmanian2     " 设置背景主题
-"set guifont=Courier_New:h10:cANSI   " 设置字体
-"语法高亮
-syntax on
+"Enable filetype plugin
+filetype on
+if has("eval") && v:version>=600
+    filetype plugin on
+    filetype indent on
+endif
 
-"autocmd InsertLeave * se nocul
-"autocmd InsertEnter * se cul
+"Set to auto read when a file is changed from the outside
+if exists("&autoread")
+    set autoread
+endif
 
-" 显示标尺
-set ruler
-" 突出显示当前行
-set cursorline
-" 输入的命令显示出来，看的清楚些
-set showcmd
-" 光标移动到buffer的顶部和底部时保持7行距离
-set scrolloff=7
-
-"set statusline=
-"set laststatus=1
-"允许折叠
-set foldenable
-" 手动折叠
-set foldmethod=manual
-
-" 显示中文帮助
-set helplang=cn
-set encoding=utf-8
-
+"internationalization
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936
 set fileencoding=utf-8
 
+"Favorite filetype
+set ffs=unix,dos,mac
+
+set noeb
+" 在处理未保存或只读文件的时候，弹出确认
+set confirm
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" 显示相关  
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" show number
+set number
+" 不要图形按钮
+set go=
+"Enable syntax highlight
+syntax on
+" 显示标尺
+set ruler
+" Highlight current line
+set cursorline
+" 输入的命令显示出来，看的清楚些
+set showcmd
+" 左下角显示当前Vim模式
+set showmode
+" 光标移动到buffer的顶部和底部时保持7行距离
+set scrolloff=7
+"允许折叠
+set foldenable
+" 手动折叠
+set foldmethod=manual
+
+" Language Setting
+set helplang=cn
+set langmenu=zh_CN.UTF-8
+" 设置退出Vim之后内容显示在终端屏幕，可以用于查看和复制
 set t_ti= t_te=
+
+" 自动缩进
+set autoindent
+set cindent
+" Tab键的宽度
+set tabstop=4
+" 统一缩进为4
+set softtabstop=4
+set shiftwidth=4
+" 用空格代替制表符
+set expandtab
+" 使回格键（backspace）正常处理indent, eol, start等
+set backspace=2
+" 搜索忽略大小写
+set ignorecase
+set smartcase
+"搜索逐字符高亮
+set hlsearch
+set incsearch
+"行内替换
+set gdefault
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""键盘命令
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"自定义前缀键
+let mapleader=","
+" f2 i:跳出程序体
+" f3 粘贴模式切换
+" f8 自动排版
+set pastetoggle=<F3>
+map <F8> gg=G
+nmap <leader>{ i{<Esc>ea}<Esc>
+nmap <leader>[ i[<Esc>ea]<Esc>
+nmap <leader>( i(<Esc>ea)<Esc>
+inoremap <leader>' ''<ESC>i
+inoremap <leader>" ""<ESC>i
+inoremap <leader>( ()<ESC>i
+inoremap <leader>[ []<ESC>i
+inoremap <leader>{ {<CR>}<ESC>O
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""" 其他命令
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"设置跳出自动补全的括号
+func SkipPair()  
+    if getline('.')[col('.') - 1] == ')' || getline('.')[col('.') - 1] == ']' || getline('.')[col('.') - 1] == '"' || getline('.')[col('.') - 1] == "'" || getline('.')[col('.') - 1] == '}'  
+        return "\<ESC>la"  
+    else  
+        return "\t"  
+    endif  
+endfunc  
+" 将f2键绑定为跳出括号  
+inoremap <F2> <c-r>=SkipPair()<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""新文件标题
+"""""" 新文件标题
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"新建.c,.h,.sh,.java文件，自动插入文件头
+"新建.c,.h,.sh,.java,.py文件，自动插入文件头
 autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
-""定义函数SetTitle，自动插入文件头
+""Function SetTitle，auto insert title
     func SetTitle()
-        "如果文件类型为.sh文件
+        "filetype is .sh
         if &filetype == 'sh' 
             call setline(1,"\#########################################################################") 
             call append(line("."), "\# File Name: ".expand("%")) 
-            call append(line(".")+1, "\# Author: Viktor") 
-            call append(line(".")+2, "\# mail: viktor@ganchangde.com") 
+            call append(line(".")+1, "\# Author: Changde") 
+            call append(line(".")+2, "\# mail: changde@ganchangde.com") 
             call append(line(".")+3, "\# Created Time: ".strftime("%c")) 
             call append(line(".")+4, "\#########################################################################") 
             call append(line(".")+5, "\#!/bin/bash") 
@@ -61,8 +133,8 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
         elseif &filetype == 'python' 
             call setline(1,"'''") 
             call append(line("."), "File Name: ".expand("%")) 
-            call append(line(".")+1, "Author: Viktor") 
-            call append(line(".")+2, "mail:viktor@ganchangde.com") 
+            call append(line(".")+1, "Author: Changde") 
+            call append(line(".")+2, "mail:changde@ganchangde.com") 
             call append(line(".")+3, "Created Time: ".strftime("%c")) 
             call append(line(".")+4, "'''") 
             call append(line(".")+5, "\#!/usr/bin/env python") 
@@ -70,8 +142,8 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
         else 
             call setline(1, "/*************************************************************************") 
             call append(line("."), "    > File Name: ".expand("%")) 
-            call append(line(".")+1, "    > Author: Viktor") 
-            call append(line(".")+2, "    > Mail: viktor@ganchangde.com ") 
+            call append(line(".")+1, "    > Author: Changde") 
+            call append(line(".")+2, "    > Mail: changde@ganchangde.com ") 
             call append(line(".")+3, "    > Created Time: ".strftime("%c")) 
             call append(line(".")+4, " ************************************************************************/") 
             call append(line(".")+5, "")
@@ -88,36 +160,4 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
     endfunc
     "新建文件后，自动定位到文件末尾
     autocmd BufNewFile * normal G
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""键盘命令
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"自定义前缀键
-let mapleader=","
-" 设置快捷键将选中文本块复制至系统剪贴板
-vnoremap <Leader>y "+y
-" 设置快捷键将系统剪贴板内容粘贴至 vim
-imap ； ;
-imap ： :
-imap “ "
-imap ” "
-imap ‘ '
-imap ’ '
-imap ？ ?
-imap ！ !
-imap 》 >
-imap 《 <
-imap 、 /
-imap ￥ $
-imap 》 >
-imap 《 <
-map ： :
-
-func! Replace_Chn( )                      " for writing latex
-    let chinese={ "（" : "( " , "）" : ") " , "，" : ",", "；" : ";", "：": ":","？" : "?", "！" : "!", "“" : "\"", "’" : "'" ,""”" : "\"", "℃" : "\\\\textcelsius", "μ" : "$\\\\mu$"} 
-    for i in keys( chinese)
-        silent! exec '%substitute/' . i . '/'. chinese[ i]  . '/g'
-     endfor
-endfunc
-nnoremap <leader>sch :call Replace_Chn( ) <cr>
 

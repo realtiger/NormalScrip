@@ -1,0 +1,2 @@
+[I 14:32:54.082 NotebookApp] Writing notebook server cookie secret to /run/user/0/jupyter/notebook_cookie_secret
+[C 14:32:54.196 NotebookApp] Running as root is not recommended. Use --allow-root to bypass.
