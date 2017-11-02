@@ -54,23 +54,24 @@ set scrolloff=7
 set foldenable
 " 手动折叠
 set foldmethod=manual
-
 " Language Setting
 set helplang=cn
 set langmenu=zh_CN.UTF-8
 " 设置退出Vim之后内容显示在终端屏幕，可以用于查看和复制
 set t_ti= t_te=
-
 " 自动缩进
 set autoindent
 set cindent
+" 只对特定文件设定tab类型
+autocmd FileType * set tabstop=4|set shiftwidth=4|set softtabstop=4|set noexpandtab
+autocmd FileType python set tabstop=4|set shiftwidth=4|set softtabstop=4|set expandtab
 " Tab键的宽度
-set tabstop=4
+" set tabstop=4
 " 统一缩进为4
-set softtabstop=4
-set shiftwidth=4
+" set softtabstop=4
+" set shiftwidth=4
 " 用空格代替制表符
-set expandtab
+"set expandtab
 " 使回格键（backspace）正常处理indent, eol, start等
 set backspace=2
 " 搜索忽略大小写
@@ -81,12 +82,13 @@ set hlsearch
 set incsearch
 "行内替换
 set gdefault
+"代码补全
+set completeopt=preview,menu
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""键盘命令
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "自定义前缀键
 let mapleader=","
-" f2 i:跳出程序体
 " f3 粘贴模式切换
 " f8 自动排版
 set pastetoggle=<F3>
@@ -99,19 +101,22 @@ inoremap <leader>" ""<ESC>i
 inoremap <leader>( ()<ESC>i
 inoremap <leader>[ []<ESC>i
 inoremap <leader>{ {<CR>}<ESC>O
+"Fast reloading of the .vimrc
+map <silent> <leader>ss :source ~/.vimrc<cr>
+"Fast editing of .vimrc
+map <silent> <leader>ee :e ~/.vimrc<cr>
+"When .vimrc is edited, reload it
+autocmd! bufwritepost .vimrc source ~/.vimrc
+" delete line tail space
+nmap <leader>l :%s/\s\+$<CR>
+" 重新定义文件中的tab
+nmap TS :%retab!<CR>
+" 将tab显示为可见字符
+nmap <leader>T :set list listchars=tab:>-,trail:-<CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""" 其他命令
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"设置跳出自动补全的括号
-func SkipPair()  
-    if getline('.')[col('.') - 1] == ')' || getline('.')[col('.') - 1] == ']' || getline('.')[col('.') - 1] == '"' || getline('.')[col('.') - 1] == "'" || getline('.')[col('.') - 1] == '}'  
-        return "\<ESC>la"  
-    else  
-        return "\t"  
-    endif  
-endfunc  
-" 将f2键绑定为跳出括号  
-inoremap <F2> <c-r>=SkipPair()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""" 新文件标题
