@@ -1,127 +1,308 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" Base Config  
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Get out of VI's compatible mode..
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Shortcut Key Summary
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Fast saving
+" nmap <leader>w :w!<cr>
+" Fast editing of the .vimrc
+" map <leader>e :e! ~/.vim_runtime/vimrc<cr>
+" set pastetoggle=<F3>
+" map <F8> gg=G
+" nmap <leader>{ i{<Esc>ea}<Esc>
+" nmap <leader>[ i[<Esc>ea]<Esc>
+" nmap <leader>( i(<Esc>ea)<Esc>
+" delete line tail space
+" nmap <leader>l :%s/\s\+$<CR>
+" redraw tab
+" nmap TS :%retab!<CR>
+" show tab&space
+" nmap <leader>T :set list listchars=tab:>-,trail:-<CR>
+" Some nice mapping to switch syntax (useful if one mixes different languages in one file)
+" map <leader>1 :set syntax=cheetah<cr>
+" map <leader>2 :set syntax=xhtml<cr>
+" map <leader>3 :set syntax=python<cr>
+" map <leader>4 :set ft=javascript<cr>
+" map <leader>$ :syntax sync fromstart<cr>
+" Fileformat
+" nmap <leader>fd :se ff=dos<cr>
+" nmap <leader>fu :se ff=unix<cr>
+" In visual mode when you press * or # to search for the current selection
+" vnoremap <silent> * :call VisualSearch('f')<CR>
+" vnoremap <silent> # :call VisualSearch('b')<CR>
+" When you press gv you vimgrep after the selected text
+" vnoremap <silent> gv :call VisualSearch('gv')<CR>
+" map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+" vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+" vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+" vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+" vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+" vnoremap $q <esc>`>a'<esc>`<i'<esc>
+" vnoremap $e <esc>`>a"<esc>`<i"<esc>
+" Map auto complete of (, ", ', [
+" inoremap $1 ()<esc>i
+" inoremap $2 []<esc>i
+" inoremap $3 {}<esc>i
+" inoremap $4 {<esc>o}<esc>O
+" inoremap $q ''<esc>i
+" inoremap $e ""<esc>i
+" inoremap $t <><esc>i 
+" au FileType python inoremap <buffer> $r return
+" au FileType python inoremap <buffer> $i import
+" au FileType python inoremap <buffer> $p print()<esc>i
+" au FileType python inoremap <buffer> $f #--- PH ---<esc>FP2xi
+" au FileType python inoremap <buffer> $c class Cn():<esc>FC2xi
+" au FileType python inoremap <buffer> $d def Dn():<esc>FD2xi
+" au FileType python map <buffer> <leader>1 /class
+" au FileType python map <buffer> <leader>2 /def
+" au FileType python map <buffer> <leader>C ?class
+" au FileType python map <buffer> <leader>D ?def
+" au FileType javascript imap <c-a> alert();<esc>hi
+" au FileType javascript inoremap <buffer> $r return
+" au FileType javascript inoremap <buffer> $f //--- PH ---<esc>FP2xi
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Key Mapping
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" With a map leader it's possible to do extra key combinations
+let mapleader = ","
+let g:mapleader = ","
+" Fast saving
+nmap <leader>w :w!<cr>
+" Fast editing of the .vimrc
+map <leader>e :e! ~/.vim_runtime/vimrc<cr>
+set pastetoggle=<F3>
+map <F8> gg=G
+nmap <leader>{ i{<Esc>ea}<Esc>
+nmap <leader>[ i[<Esc>ea]<Esc>
+nmap <leader>( i(<Esc>ea)<Esc>
+" delete line tail space
+nmap <leader>l :%s/\s\+$<CR>
+" redraw tab
+nmap TS :%retab!<CR>
+" show tab&space
+nmap <leader>T :set list listchars=tab:>-,trail:-<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" General
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Get out of VI's compatible mode
 set nocompatible
-"Sets how many lines of history VIM har to remember
-set history=1000
-
-"Enable filetype plugin
+" Sets how many lines of history VIM has to remember
+set history=700
+" Enable filetype plugin
 filetype on
-if has("eval") && v:version>=600
-    filetype plugin on
-    filetype indent on
-endif
+filetype plugin on
+filetype indent on
+" Set to auto read when a file is changed from the outside
+set autoread
+" When vimrc is edited, reload it
+autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
+set showcmd
+set showmode
+set t_ti= t_te=
 
-"Set to auto read when a file is changed from the outside
-if exists("&autoread")
-    set autoread
-endif
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Colors and Fonts
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Enable syntax highlight
+syntax on
 "internationalization
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936
 set fileencoding=utf-8
-
-"Favorite filetype
-set ffs=unix,dos,mac
-
-set noeb
-" 在处理未保存或只读文件的时候，弹出确认
-set confirm
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" 显示相关  
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" show number
-set number
-" 不要图形按钮
-set go=
-"Enable syntax highlight
-syntax on
-" 显示标尺
-set ruler
-" Highlight current line
-set cursorline
-" 输入的命令显示出来，看的清楚些
-set showcmd
-" 左下角显示当前Vim模式
-set showmode
-" 光标移动到buffer的顶部和底部时保持7行距离
-set scrolloff=7
-"允许折叠
-set foldenable
-" 手动折叠
-set foldmethod=manual
 " Language Setting
 set helplang=cn
 set langmenu=zh_CN.UTF-8
-" 设置退出Vim之后内容显示在终端屏幕，可以用于查看和复制
-set t_ti= t_te=
-" 自动缩进
-set autoindent
-set cindent
-" 只对特定文件设定tab类型
-autocmd FileType * set tabstop=4|set shiftwidth=4|set softtabstop=4|set noexpandtab
-autocmd FileType python set tabstop=4|set shiftwidth=4|set softtabstop=4|set expandtab
-" Tab键的宽度
-" set tabstop=4
-" 统一缩进为4
-" set softtabstop=4
-" set shiftwidth=4
-" 用空格代替制表符
-"set expandtab
-" 使回格键（backspace）正常处理indent, eol, start等
-set backspace=2
-" 搜索忽略大小写
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Fileformat
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Some nice mapping to switch syntax (useful if one mixes different languages in one file)
+map <leader>1 :set syntax=cheetah<cr>
+map <leader>2 :set syntax=xhtml<cr>
+map <leader>3 :set syntax=python<cr>
+map <leader>4 :set ft=javascript<cr>
+map <leader>$ :syntax sync fromstart<cr>
+"Favorite filetype
+set ffs=unix,dos,mac "Default file types
+nmap <leader>fd :se ff=dos<cr>
+nmap <leader>fu :se ff=unix<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" VIM user interface
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Highlight current
+set cursorline
+" Set 7 lines to the curors - when moving vertical..
+set scrolloff=7
+"Turn on WiLd menu
+set wildmenu
+"Always show current position
+set ruler
+" Set backspace config
+set backspace=eol,start,indent
+"Ignore case when searching
 set ignorecase
 set smartcase
-"搜索逐字符高亮
+"Highlight search things
 set hlsearch
+"Make search act like search in modern browsers
 set incsearch
-"行内替换
-set gdefault
-"代码补全
+"Set magic on, for regular expressions
+set magic
+"Show matching bracets when text indicator is over them
+set showmatch
+"How many tenths of a second to blink
+set matchtime=2
+" No sound on errors
+set noerrorbells
+set novisualbell
+" allow fold
+set foldenable
+" fold method
+set foldmethod=manual
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Files, backups and undo
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git anyway...
+set nobackup
+set nowb
+" set noswapfile
+set noundofile
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Text, tab and indent related
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" use space replace tab
+set expandtab
+" auto indent width
+set shiftwidth=4
+" tab width
+set tabstop=4
+" a <Tab> in front of a line inserts blanks according to 'shiftwidth'
+set smarttab
+" set different tab mode base file type
+" autocmd FileType * set tabstop=4|set shiftwidth=4|set softtabstop=4|set noexpandtab
+" autocmd FileType python set tabstop=4|set shiftwidth=4|set softtabstop=4|set expandtab
+" wrap long lines at a character in 'breakat'
+set linebreak
+" Maximum width of text that is being inserted
+set textwidth=500
+"Auto indent
+set autoindent
+set cindent
+"Smart indet
+set smartindent
+"Wrap lines
+set wrap
+"Show line number
+set number
+"code complete
 set completeopt=preview,menu
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""键盘命令
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"自定义前缀键
-let mapleader=","
-" f3 粘贴模式切换
-" f8 自动排版
-set pastetoggle=<F3>
-map <F8> gg=G
-nmap <leader>{ i{<Esc>ea}<Esc>
-nmap <leader>[ i[<Esc>ea]<Esc>
-nmap <leader>( i(<Esc>ea)<Esc>
-inoremap <leader>' ''<ESC>i
-inoremap <leader>" ""<ESC>i
-inoremap <leader>( ()<ESC>i
-inoremap <leader>[ []<ESC>i
-inoremap <leader>{ {<CR>}<ESC>O
-"Fast reloading of the .vimrc
-map <silent> <leader>ss :source ~/.vimrc<cr>
-"Fast editing of .vimrc
-map <silent> <leader>ee :e ~/.vimrc<cr>
-"When .vimrc is edited, reload it
-autocmd! bufwritepost .vimrc source ~/.vimrc
-" delete line tail space
-nmap <leader>l :%s/\s\+$<CR>
-" 重新定义文件中的tab
-nmap TS :%retab!<CR>
-" 将tab显示为可见字符
-nmap <leader>T :set list listchars=tab:>-,trail:-<CR>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""" 其他命令
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Visual mode related
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" In visual mode when you press * or # to search for the current selection
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
+" When you press gv you vimgrep after the selected text
+vnoremap <silent> gv :call VisualSearch('gv')<CR>
+map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" 新文件标题
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"新建.c,.h,.sh,.java,.py文件，自动插入文件头
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Parenthesis/bracket expanding
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+" Map auto complete of (, ", ', [
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $4 {<esc>o}<esc>O
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+inoremap $t <><esc>i
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Python section
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let python_highlight_all = 1
+au FileType python syn keyword pythonDecorator True None False self
+au BufNewFile,BufRead *.jinja set syntax=htmljinja
+au BufNewFile,BufRead *.mako set ft=mako
+au FileType python inoremap <buffer> $r return
+au FileType python inoremap <buffer> $i import 
+au FileType python inoremap <buffer> $p print()<esc>i
+au FileType python inoremap <buffer> $f #--- PH ---<esc>FP2xi
+au FileType python inoremap <buffer> $c class Cn():<esc>FC2xi
+au FileType python inoremap <buffer> $d def Dn():<esc>FD2xi
+au FileType python map <buffer> <leader>1 /class
+au FileType python map <buffer> <leader>2 /def
+au FileType python map <buffer> <leader>C ?class
+au FileType python map <buffer> <leader>D ?def
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" JavaScript section
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au FileType javascript call JavaScriptFold()
+au FileType javascript setl fen
+au FileType javascript setl nocindent
+au FileType javascript imap <c-a> alert();<esc>hi
+au FileType javascript inoremap <buffer> $r return
+au FileType javascript inoremap <buffer> $f //--- PH ---<esc>FP2xi
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Function
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+" From an idea by Michael Naumann
+function! VisualSearch(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '///.*$^~[]')
+    let l:pattern = substitute(l:pattern, "/n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+function! JavaScriptFold()
+    setl foldmethod=syntax
+    setl foldlevelstart=1
+    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+
+    function! FoldText()
+    return substitute(getline(v:foldstart), '{.*', '{...}', '')
+    endfunction
+    setl foldtext=FoldText()
+endfunction
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" New file title
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"create file type is .c,.h,.sh,.java,.py,title will auto fill
 autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
 ""Function SetTitle，auto insert title
     func SetTitle()
@@ -163,6 +344,5 @@ autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()"
             call append(line(".")+7, "")
         endif
     endfunc
-    "新建文件后，自动定位到文件末尾
+    "fill finish, cursor goto end
     autocmd BufNewFile * normal G
-
