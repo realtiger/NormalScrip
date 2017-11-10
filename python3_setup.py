@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 # install bash-complete
-os.system("yum install bash-complete -y")
+os.system("yum install bash-completion -y")
 # install gcc&vim
 os.system("yum install gcc* vim* -y")
 # home directory
@@ -43,10 +43,13 @@ if not os.path.exists("%s/.virtualenvs" % home_path[0]):
     os.system('pip3 install virtualenv')
     os.system('pip3 install virtualenvwrapper')
     os.system('mkdir ~/.virtualenvs')
-    os.system('ln -s /usr/local/python3/bin/virtualenv /usr/bin/virtualenv')
+    if not os.path.isfile('/usr/bin/virtualenv'):
+        os.system('ln -s /usr/local/python3/bin/virtualenv /usr/bin/virtualenv')
     # config source file
-    with open('/etc/bashrc', 'a') as f:
-        if not "source /usr/local/python3/bin/virtualenvwrapper3.sh" in f.read():
+    with open('/etc/bashrc', 'r') as f:
+        context = f.read()
+    if not "source /usr/local/python3/bin/virtualenvwrapper3.sh" in context:
+        with open('/etc/bashrc', 'a') as f:
             f.write('''
 export EDITOR=/usr/bin/vim
 if [ ! -d "$HOME/.virtualenvs" ] ; then
